@@ -29,4 +29,4 @@ dc_down:
 ##################
 
 app_bash:
-	docker-compose -f ./docker/docker-compose.yml exec -u www-data php-fpm bash
+	docker-compose -f ./docker/docker-compose.yml exec php-fpm bash
