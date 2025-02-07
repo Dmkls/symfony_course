@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Project;
+use App\Entity\ProjectGroup;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +27,11 @@ class ProjectType extends AbstractType
                         'maxMessage' => 'Name should be at most 255 characters long',
                     ]),
                 ],
-            ]);
+            ])
+            ->add('projectGroup', EntityType::class, [
+            'class' => ProjectGroup::class,
+            'choice_label' => 'id',
+            'required' => true,]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

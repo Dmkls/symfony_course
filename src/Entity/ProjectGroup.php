@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ProjectGroupRepository;
 use Symfony\Component\Uid\Uuid;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: ProjectGroupRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -23,9 +25,14 @@ class ProjectGroup
     #[ORM\Column(type: 'datetime')]
     private ?\DateTimeInterface $updatedAt = null;
 
+
+    #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'projectGroup', cascade: ['persist', 'remove'])]
+    private Collection $projects;
+
     public function __construct()
     {
         $this->id = Uuid::v7();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -65,6 +72,32 @@ class ProjectGroup
     public function setUpdatedAt(\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->setProjectGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        if ($this->projects->removeElement($project)) {
+            if ($project->getProjectGroup() === $this) {
+                $project->setProjectGroup(null);
+            }
+        }
 
         return $this;
     }
