@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-#[Route('/project-group')]
+#[Route('/task')]
 final class TaskController extends AbstractController
 {
     #[Route(name: 'app_task_index', methods: ['GET'])]
@@ -77,7 +77,6 @@ final class TaskController extends AbstractController
         ];
         return $this->json(['data' => $data]);
     }
-
 
     #[Route('/{id}/edit', name: 'app_task_edit', methods: ['GET', 'PATCH'])]
     public function update(string $id, Request $request, EntityManagerInterface $em, TaskRepository $repository): JsonResponse
