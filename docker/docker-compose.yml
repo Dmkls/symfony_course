@@ -7,7 +7,7 @@ services:
     environment:
       PHP_IDE_CONFIG: "serverName=Docker"
     volumes:
-      - /var/www/vendor/
+      - /var/vendor/
       - ./../:/var/www/
 
   nginx:
